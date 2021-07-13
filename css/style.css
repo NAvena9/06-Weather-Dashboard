@@ -1,0 +1,24 @@
+/* Pendientes: */
+
+/*Hacer un CSS separando el styling de el html  */
+/* mejorar el UI */
+/* Change fonts */
+/* Link correcto del script */
+
+/* 5-7 git push */
+/* Subir ala pagina */
+:root {
+    --white: white;
+    --bg-light:  rgb(216, 230, 177);
+    --bg-dark:  #06365d;
+}
+
+header {
+    /* background-color: var(--background); */
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 88%);
+    height: 100px;
+    text-align: center;
+    color: var(--white);
+    padding: 20px;
+}
