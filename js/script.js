@@ -1,32 +1,31 @@
-function initPage() {
+function startSearch() {
     const cityEl = document.getElementById("enter-city");
     const nameEl = document.getElementById("city-name");
     const searchEl = document.getElementById("search-button");
     const clearEl = document.getElementById("clear-history");
-    const currentPicEl = document.getElementById("current-pic");
+    const currentPicEl = document.getElementById("demo-pic");
     const currentTempEl = document.getElementById("temperature");
     const currentHumidityEl = document.getElementById("humidity");
     const currentWindEl = document.getElementById("wind-speed");
     const currentUVEl = document.getElementById("UV-index");
     const historyEl = document.getElementById("history");
-    var fivedayEl = document.getElementById("fiveday-header");
-    var todayweatherEl = document.getElementById("today-weather");
+    var fivedayEl = document.getElementById("fiveday-forecast");
+    var todayWeatherEl = document.getElementById("today-weather");
     let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
-    const APIKey = "8f73717c471cf81222e762e0ce8c34b0";  //API generated from the API site
+    const APIKey = "8f73717c471cf81222e762e0ce8c34b0";  //API key from the APIsite
 
     function getWeather(cityName) {
-        // Execute a current weather get request from open weather api
-        let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
-        axios.get(queryURL)
+        let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;  
+        axios.get(queryURL) //get request from the open weather site
             .then(function (response) {
+                todayWeatherEl.classList.remove("d-none");
 
-                todayweatherEl.classList.remove("d-none");
-
-                // Parse response to display current weather
-                const currentDate = new Date(response.data.dt * 1000);
+                // Getting the current weather form API
+                const currentDate = new Date(response.data.dt * 1000); //the API returns timestamp in seconds, so this expression gets us milliseconds to be able to work with the date constructor.
                 const day = currentDate.getDate();
                 const month = currentDate.getMonth() + 1;
                 const year = currentDate.getFullYear();
+
                 nameEl.innerHTML = response.data.name + " (" + month + "/" + day + "/" + year + ") ";
                 let weatherPic = response.data.weather[0].icon;
                 currentPicEl.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherPic + "@2x.png");
@@ -34,17 +33,16 @@ function initPage() {
                 currentTempEl.innerHTML = "Temperature: " + k2f(response.data.main.temp) + " &#176F";
                 currentHumidityEl.innerHTML = "Humidity: " + response.data.main.humidity + "%";
                 currentWindEl.innerHTML = "Wind Speed: " + response.data.wind.speed + " MPH";
-                
-                // Get UV Index
+
+                // Getting the  UV Index
                 let lat = response.data.coord.lat;
                 let lon = response.data.coord.lon;
                 let UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey + "&cnt=1";
                 axios.get(UVQueryURL)
-                    .then(function (response) {
+                    .then(function (response) { 
                         let UVIndex = document.createElement("span");
-                        
-                        // When UV Index is good, shows green, when ok shows yellow, when bad shows red
-                        if (response.data[0].value < 4 ) {
+                        // Color response setting for the UV Index (green = good, yellow = ok, red = bad)
+                        if (response.data[0].value < 4) {
                             UVIndex.setAttribute("class", "badge badge-success");
                         }
                         else if (response.data[0].value < 8) {
@@ -58,15 +56,13 @@ function initPage() {
                         currentUVEl.innerHTML = "UV Index: ";
                         currentUVEl.append(UVIndex);
                     });
-                
-                // Get 5 day forecast for this city
+
+                // Geting the Five-day forecast for the city
                 let cityID = response.data.id;
                 let forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIKey;
                 axios.get(forecastQueryURL)
                     .then(function (response) {
                         fivedayEl.classList.remove("d-none");
-                        
-                        //  Parse response to display forecast for next 5 days
                         const forecastEls = document.querySelectorAll(".forecast");
                         for (i = 0; i < forecastEls.length; i++) {
                             forecastEls[i].innerHTML = "";
@@ -80,7 +76,7 @@ function initPage() {
                             forecastDateEl.innerHTML = forecastMonth + "/" + forecastDay + "/" + forecastYear;
                             forecastEls[i].append(forecastDateEl);
 
-                            // Icon for current weather
+                            // setting the icons for the current weather
                             const forecastWeatherEl = document.createElement("img");
                             forecastWeatherEl.setAttribute("src", "https://openweathermap.org/img/wn/" + response.data.list[forecastIndex].weather[0].icon + "@2x.png");
                             forecastWeatherEl.setAttribute("alt", response.data.list[forecastIndex].weather[0].description);
@@ -96,7 +92,7 @@ function initPage() {
             });
     }
 
-    // Get history from local storage if any
+    // setting local storage 
     searchEl.addEventListener("click", function () {
         const searchTerm = cityEl.value;
         getWeather(searchTerm);
@@ -105,14 +101,14 @@ function initPage() {
         renderSearchHistory();
     })
 
-    // Clear History button
+    // Clear History Button
     clearEl.addEventListener("click", function () {
         localStorage.clear();
         searchHistory = [];
         renderSearchHistory();
     })
 
-    function k2f(K) {
+    function k2f(K) { //Kelvin Deg conversion to Farenheit
         return Math.floor((K - 273.15) * 1.8 + 32);
     }
 
@@ -135,7 +131,7 @@ function initPage() {
     if (searchHistory.length > 0) {
         getWeather(searchHistory[searchHistory.length - 1]);
     }
-    
+
 }
 
-initPage();
+startSearch();
