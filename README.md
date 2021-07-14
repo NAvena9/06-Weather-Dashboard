@@ -1,8 +1,7 @@
 # Unit 06 - Server-Side APIs: Weather Dashboard
 
 ## Project
-
-Third-party APIs allow us to access their data and functionality by making requests with specific parameters to a URL. Developers are often tasked with retrieving data from another application's API and using it in the context of their own. 
+This project consists on working with Third-Party APIs. This type of APIs allow us to access their data and functionality by making requests with specific parameters to a URL. 
 
 The challenge of this project is to build a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
 
@@ -40,25 +39,29 @@ THEN I am again presented with current and future conditions for that city
 
 The following image shows the web application's appearance and functionality:
 
-![The weather app includes a search option, a list of cities, and a five-day forecast and current weather conditions for Atlanta.](./Assets/06-server-side-apis-homework-demo.png)
+![The weather app includes a search option, a list of cities, and a five-day forecast and current weather conditions for Atlanta.](./assets/demo1.png)
 
+![The weather app includes a search option, a list of cities, and a five-day forecast and current weather conditions for Atlanta.](./assets/demo2.png)
 
 
 
 ## URL of deployment
 
-Link: 
+Link: <a href="https://navena9.github.io/06-Weather-Dashboard/" target="_blank">URL to App</a>
+
 
 
 
 ## Technologies
 
-* Open Weather SPI
+* Open Weather API
+* JQuery
+* javaScript
 * Bootstrap
 
 
 
-### Contributor
+## Contributor
 
 Nicolas Cedano Avena
 - - -
